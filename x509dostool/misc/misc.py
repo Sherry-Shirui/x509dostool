@@ -280,7 +280,11 @@ def run_cmd(cmd, capture_output = True, text = True, env = None, check = True, e
             return res
 
 def exec_shell_script_with_cert(script_path, cert_path):
-    process = subprocess.Popen(["/bin/bash", script_path, cert_path], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+    if script_path.endswith(".py"):
+        interpreter = [sys.executable]
+    else:
+        interpreter = ["/bin/bash"]
+    process = subprocess.Popen(interpreter + [script_path, cert_path], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
     return process
 
 def get_all_filenames(path, suffixes = None):

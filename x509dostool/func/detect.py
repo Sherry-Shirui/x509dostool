@@ -131,7 +131,7 @@ def run_detect(script_path, cert_path, cpu_rounds, mem_rounds, cpu_threshold, me
     return issue_num
 
 def handle_detects(script_path, cert_path, cpu_rounds, mem_rounds, cpu_threshold, mem_threshold):
-    script_paths = get_all_filenames(script_path, suffixes = [".sh"])
+    script_paths = get_all_filenames(script_path, suffixes = [".py", ".sh"])
     cert_paths = get_all_filenames(cert_path)
 
     test_num = 0
