@@ -45,8 +45,9 @@ def monitor_process(process, cpu_rounds, mem_rounds, cpu_threshold, mem_threshol
     try:
         time.sleep(4)
 
-        pid = int(subprocess.check_output(["pgrep", "-P", str(process.pid)]).decode().strip())
-        ps_process = psutil.Process(pid)
+        parent = psutil.Process(process.pid)
+        children = parent.children(recursive=True)
+        ps_process = children[0] if children else parent
 
         time.sleep(1)
 
