@@ -266,7 +266,7 @@ def adjust_length(data, positions, offset):
 
 def run_cmd(cmd, capture_output = True, text = True, env = None, check = True, errors = None, exit = True):
     try:
-        res = subprocess.run(["bash", "-c", cmd], capture_output = capture_output, text = text, env = env, check = check, errors = errors)
+        res = subprocess.run(cmd, shell=True, capture_output = capture_output, text = text, env = env, check = check, errors = errors)
     except Exception as e:
         alert(f"{e}")
 
@@ -279,8 +279,12 @@ def run_cmd(cmd, capture_output = True, text = True, env = None, check = True, e
         else:
             return res
 
-def exec_shell_script_with_cert(script_path, cert_path):
-    process = subprocess.Popen(["/bin/bash", script_path, cert_path], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+def exec_script_with_cert(script_path, cert_path):
+    import sys
+    if script_path.endswith('.py'):
+        process = subprocess.Popen([sys.executable, script_path, cert_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    else:
+        process = subprocess.Popen([script_path, cert_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     return process
 
 def get_all_filenames(path, suffixes = None):
